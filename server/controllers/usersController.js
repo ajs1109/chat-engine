@@ -1,23 +1,26 @@
 import { User } from "../models/userModel.js";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const existingUser = await User.findOne({email});
+    const existingUser = await User.findOne({ email });
     if (!existingUser)
       return res.status(400).json({ message: "User does not exists" });
     if (password !== existingUser.password) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({
-        email:existingUser.email,
-        id:existingUser._id,
+    const token = jwt.sign(
+      {
+        email: existingUser.email,
+        id: existingUser._id,
+      },
+      "test",
+      { expiresIn: "2h" }
+    );
 
-    },'test',{expiresIn: '2h'})
-
-    res.status(200).json({ result: existingUser,token });
+    res.status(200).json({ result: existingUser, token });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -38,7 +41,7 @@ export const signUp = async (req, res) => {
       password: `${password}`,
       pic: `${pic}`,
     });
-    
+
     const token = jwt.sign(
       {
         email: result.email,
@@ -47,8 +50,23 @@ export const signUp = async (req, res) => {
       "test",
       { expiresIn: "2h" }
     );
-    res.status(200).json({ result,token });
+    res.status(200).json({ result, token });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const allUsers = async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [      
+            { name: { $regex: req.query.search, $options: "i" } },
+            { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } }).select('name email pic');
+  res.status(200).json({users});
+};
+
+

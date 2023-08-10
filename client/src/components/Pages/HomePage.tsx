@@ -48,7 +48,6 @@ const HomePage = () => {
 
         dispatch(authSignin(res.data));
       } else {
-        console.log("data :", data);
         const newData = {
           email: data.email,
           password: data.password,
