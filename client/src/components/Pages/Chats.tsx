@@ -24,7 +24,7 @@ const Chats = () => {
         email={user?.result?.email}
         pic={user?.result?.pic}
       />
-      <div className="mx-3 flex gap-2 ">
+      <div className="sm:mx-3 sm:flex sm:gap-2">
         <MyChats />
         <Chat />
         

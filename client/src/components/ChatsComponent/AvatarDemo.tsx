@@ -57,7 +57,10 @@ export function AvatarDemo({ pic, name, email }: AvatarProps) {
             className="flex space-x-2 items-center hover:bg-slate-100 outline-none"
             variant="ghost"
           >
-         
+            <Avatar>
+              <AvatarImage src={`http://localhost:5000/uploads/profilePicture/${pic}`} alt="@shadcn" />
+              <AvatarFallback>{name[0].toUpperCase()}</AvatarFallback>
+            </Avatar>
             <ChevronDown className="h-5 w-5" />
           </Button>
         </DropdownMenuTrigger>

@@ -3,13 +3,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import axios from '@/axios/axios'
 import { SheetClose } from "../ui/sheet";
 type searchFriendProps = {
-  name:string;
-  email:string;
-  pic:string;
-  userId?:string;
-}
+  name: string;
+  email: string;
+  pic: string;
+  userId?: string;
+  ref?: HTMLDivElement
+};
 
-const SearchFriend = ({name,email,pic,userId}:searchFriendProps) => {
+const SearchFriend = ({name,email,pic,userId,ref}:searchFriendProps) => {
   const accessChat = async () => {
     try{
       console.log(userId);
