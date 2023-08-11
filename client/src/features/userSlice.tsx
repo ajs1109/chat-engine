@@ -1,6 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { User } from "./chatSlice";
 
-const initialState = {
+interface UserData{
+    userData: User | null
+}
+
+
+
+const initialState:UserData = {
     authData:null,
 }
 
@@ -8,7 +15,7 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers:{
-        authSignin:(state,action) => {
+        authSignin:(state,action:PayloadAction<allData>) => {
             localStorage.setItem('profile',JSON.stringify({...action?.payload}))
             state.authData = action?.payload
         },

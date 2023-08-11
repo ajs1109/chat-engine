@@ -4,6 +4,7 @@ import 'dotenv/config'
 import mongoose from "mongoose";
 import cors from 'cors';
 import userRouter from './routes/users.js'
+import chatRouter from './routes/chats.js'
 
 const app = express();
 app.use(bodyParser.json({limit:'300mb',extended:true}));
@@ -12,8 +13,8 @@ app.use(cors());
 
 app.use('/uploads',express.static('uploads'))
 
-app.use('/user',userRouter)
-app.use('/home',userRouter)
+app.use('/user',userRouter);
+app.use('/chat',chatRouter);
 
 
 const PORT = process.env.PORT 

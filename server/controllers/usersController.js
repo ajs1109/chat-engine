@@ -35,6 +35,9 @@ export const signUp = async (req, res) => {
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
+
+    const newData =[password, ...newData];
+
     const result = await User.create({
       name: `${fname} ${lname}`,
       email: `${email}`,

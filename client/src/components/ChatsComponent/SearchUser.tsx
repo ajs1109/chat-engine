@@ -15,6 +15,7 @@ import { Search } from "lucide-react";
 import SearchFriend from "./SearchFriend";
 import { useEffect, useState } from "react";
 import axios from '@/axios/axios'
+import { SkeletonDemo } from "./SkeletonDemo";
 
 type userProps = {
   name: string;
@@ -43,8 +44,7 @@ export function SheetDemo() {
     }
   }
   return (
-   
-    <Sheet key="left"> 
+    <Sheet key="left">
       <SheetTrigger asChild>
         <Button className="px-2 my-auto border-none" variant="ghost">
           <Search /> <p className="px-2">Search Friend</p>
@@ -58,14 +58,30 @@ export function SheetDemo() {
           </SheetDescription>
         </SheetHeader>
         <div className="py-4 flex w-full max-w-sm items-center space-x-2">
-          <Input type="email" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="abc@example.com" className="outline-none"/>
-            <Button type="submit" onClick={findUser}>Go</Button>
+          <Input
+            type="email"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="abc@example.com"
+            className="outline-none"
+          />
+          <Button type="submit" onClick={findUser}>
+            Go
+          </Button>
         </div>
-       {
-        users.map((item:userProps) => (
-          <SearchFriend name={item?.name} email={item?.email} pic={item?.pic} key={item?._id} />
-        ))
-       }
+        { loading ? (
+          <SkeletonDemo />
+        ) : (
+          users.map((item: userProps) => (
+            <SearchFriend
+              name={item?.name}
+              email={item?.email}
+              pic={item?.pic}
+              key={item?._id}
+              userId={item?._id}
+            />
+          ))
+        )}
       </SheetContent>
     </Sheet>
   );

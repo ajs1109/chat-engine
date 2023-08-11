@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Chat from "../ChatsComponent/Chat";
 import MainNav from "../ChatsComponent/MainNav";
 import MyChats from "../ChatsComponent/MyChats";
+import { SkeletonDemo } from "../ChatsComponent/SkeletonDemo";
 
 const Chats = () => {
   const navigate = useNavigate();
@@ -23,9 +24,10 @@ const Chats = () => {
         email={user?.result?.email}
         pic={user?.result?.pic}
       />
-      <div className="flex">
+      <div className="mx-3 flex gap-2 ">
         <MyChats />
         <Chat />
+        
       </div>
     </div>
   );
