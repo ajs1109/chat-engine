@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import Chat from "../ChatsComponent/Chat";
 import MainNav from "../ChatsComponent/MainNav";
 import MyChats from "../ChatsComponent/MyChats";
-import { SkeletonDemo } from "../ChatsComponent/SkeletonDemo";
 
 const Chats = () => {
   const navigate = useNavigate();
@@ -18,13 +17,13 @@ const Chats = () => {
   console.log("user : ", user);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full">
       <MainNav
         name={user?.result?.name}
         email={user?.result?.email}
         pic={user?.result?.pic}
       />
-      <div className="sm:mx-3 sm:flex sm:gap-2">
+      <div className="sm:mx-3 sm:flex sm:gap-2 h-full">
         <MyChats />
         <Chat />
         

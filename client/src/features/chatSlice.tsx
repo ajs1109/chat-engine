@@ -12,6 +12,7 @@ export interface Chat {
   createdAt: string;
   updatedAt: string;
   __v: number;
+  groupAdmin?: User;
 }
 
 export interface User {

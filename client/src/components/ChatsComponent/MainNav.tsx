@@ -1,8 +1,7 @@
-import { Search,Bell } from "lucide-react";
+import { SheetDemo } from '@/components/ChatsComponent/SearchUser';
+import { Bell } from "lucide-react";
 import React from "react";
-import { Button } from "../ui/button";
 import { AvatarDemo } from "./AvatarDemo";
-import {SheetDemo} from '@/components/ChatsComponent/SearchUser'
 interface MainNavProps {
     name:string;
     email:string;

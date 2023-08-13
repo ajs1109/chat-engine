@@ -12,7 +12,7 @@ import {
 } from "../ui/dropdown-menu";
 import { useDispatch } from "react-redux";
 import { authLogout } from "@/features/userSlice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
 //http://localhost:5000/uploads/profilePic/1691581008065-zoro.jpg

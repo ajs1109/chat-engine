@@ -1,14 +1,20 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { User } from "./chatSlice";
 
+
 interface UserData{
-    userData: User | null
+    userData: allData | null
+}
+
+interface allData {
+    result: User;
+    token:string;
 }
 
 
 
 const initialState:UserData = {
-    authData:null,
+    userData:null,
 }
 
 const authSlice = createSlice({
@@ -17,11 +23,11 @@ const authSlice = createSlice({
     reducers:{
         authSignin:(state,action:PayloadAction<allData>) => {
             localStorage.setItem('profile',JSON.stringify({...action?.payload}))
-            state.authData = action?.payload
+            state.userData = action?.payload
         },
-        authLogout:(state,action) => {
+        authLogout:(state) => {
             localStorage.clear();
-            state.authData = null;
+            state.userData = null;
         }
     }
 })

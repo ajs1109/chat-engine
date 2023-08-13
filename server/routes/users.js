@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 router.post('/login',login);
 router.post('/signup',upload.single('pic'),signUp);
-router.get('/findUsers',auth,allUsers)
+router.get('/findUsers',auth,allUsers);
 // router.get()
 
 export default router

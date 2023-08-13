@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "../ui/button";
-import { Plus } from "lucide-react";
 import axios from "@/axios/axios";
+import { Chat, chatsGetAll } from "@/features/chatSlice";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { chatsGetAll, Chat } from "@/features/chatSlice";
-import { AvatarFallback, Avatar, AvatarImage } from "../ui/avatar";
-import { SkeletonDemo } from "./SkeletonDemo";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { DialogDemo } from "./NewGroupChat";
+import { setActiveChat } from "@/features/activeChat";
 
 const MyChats = () => {
-  const [chats, setChats] = useState<Chat[] | null>(null);
+  const [groupCreated, setGroupCreated] = useState(false);
+  const [chats, setChats] = useState<Chat[] | []>([]);
   //@ts-ignore
   const { result } = JSON.parse(localStorage.getItem("profile"));
   const name = result?.name;
@@ -19,26 +18,51 @@ const MyChats = () => {
       const { data } = await axios.get("/chat/fetchChats");
       setChats(data);
       dispatch(chatsGetAll(data));
+  
     } catch (err: any) {
       console.log(err.response.data);
     }
   };
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [groupCreated]);
+
+
+  const handleActiveChat = (item:Chat) => {
+    console.log(item)
+    dispatch(setActiveChat(item))
+  }
 
   return (
-    <div className="basis-[30%] my-auto h-[700px] rounded-md bg-slate-200 p-2">
+    <div className="basis-[30%] my-auto h-[700px] flex flex-col rounded-md bg-slate-200 p-2">
       <div className="flex justify-between items-center">
         <div className="text-lg font-mono">My Chats</div>
-        <DialogDemo/>
+        <DialogDemo setGroupCreated={setGroupCreated} groupCreated={groupCreated} />
       </div>
-      <div className="flex flex-col gap-2 mt-4">
-        {!chats ? (
-          <SkeletonDemo />
-        ) : (
-          chats?.map((item, index) => (
-            <div className="bg-slate-300 sm:rounded-md flex sm:p-2" key={index}>
+      <div className="flex flex-col gap-2 mt-4 overflow-auto h-full no-scrollbar"> 
+        {chats.map((item, index) =>
+          item.isGroupChat ? (
+            <div className="bg-slate-300 hover:bg-slate-400 sm:rounded-md flex sm:p-2" key={index} onClick={() => handleActiveChat(item)} >
+              <div>
+                <Avatar className="m-auto">
+                  <AvatarImage
+                    src=""
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>
+                    {item.chatName[0].toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              <div className="ml-3 top-0 flex flex-col">
+                <div className="text-sm font-semibold tracking-wide">
+                  {item.chatName}
+                </div>
+                <div className="text-xs">latestMessage</div>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-slate-300 hover:bg-slate-400 sm:rounded-md flex sm:p-2" key={index} onClick={() => handleActiveChat(item)}>
               <div>
                 <Avatar className="m-auto">
                   <AvatarImage
@@ -63,7 +87,7 @@ const MyChats = () => {
                 <div className="text-xs">latestMessage</div>
               </div>
             </div>
-          ))
+          )
         )}
       </div>
     </div>
