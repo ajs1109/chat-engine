@@ -14,7 +14,6 @@ const Chats = () => {
   useEffect(() => {
     dispatch(authSignin(user));
   }, []);
-  console.log("user : ", user);
 
   return (
     <div className="flex flex-col h-full">
@@ -23,7 +22,7 @@ const Chats = () => {
         email={user?.result?.email}
         pic={user?.result?.pic}
       />
-      <div className="sm:mx-3 sm:flex sm:gap-2 h-full">
+      <div className="sm:mx-3 sm:flex h-[680px] mt-4">
         <MyChats />
         <Chat />
         

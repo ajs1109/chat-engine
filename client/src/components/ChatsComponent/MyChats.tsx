@@ -34,7 +34,7 @@ const MyChats = () => {
   }
 
   return (
-    <div className="basis-[30%] my-auto h-[700px] flex flex-col rounded-md bg-slate-200 p-2">
+    <div className="basis-[30%] my-auto h-[680px] flex flex-col rounded-md bg-slate-200 p-2">
       <div className="flex justify-between items-center">
         <div className="text-lg font-mono">My Chats</div>
         <DialogDemo setGroupCreated={setGroupCreated} groupCreated={groupCreated} />
@@ -42,7 +42,7 @@ const MyChats = () => {
       <div className="flex flex-col gap-2 mt-4 overflow-auto h-full no-scrollbar"> 
         {chats.map((item, index) =>
           item.isGroupChat ? (
-            <div className="bg-slate-300 hover:bg-slate-400 sm:rounded-md flex sm:p-2" key={index} onClick={() => handleActiveChat(item)} >
+            <div className="bg-slate-300 hover:bg-slate-400 sm:rounded-md flex sm:p-2 cursor-pointer" key={index} onClick={() => handleActiveChat(item)} >
               <div>
                 <Avatar className="m-auto">
                   <AvatarImage

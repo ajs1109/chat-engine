@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 
 interface AlertModalProps {
+  title:string;
+  description:string;
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
@@ -9,6 +11,8 @@ interface AlertModalProps {
 }
 
 export const AlertModal: React.FC<AlertModalProps> = ({
+  title,
+  description,
   isOpen,
   onClose,
   onConfirm,
@@ -16,8 +20,8 @@ export const AlertModal: React.FC<AlertModalProps> = ({
 }) => {
   return (
     <Modal
-      title="Are you sure ?"
-      description="This action cannot be undone"
+      title={title}
+      description={description}
       isOpen={isOpen}
       onClose={onClose}
     >

@@ -69,17 +69,18 @@ export function SheetDemo() {
             Go
           </Button>
         </div>
-        { loading ? (
+        {loading ? (
           <SkeletonDemo />
         ) : (
           users.map((item: userProps) => (
-            <SearchFriend
-              name={item?.name}
-              email={item?.email}
-              pic={item?.pic}
-              key={item?._id}
-              userId={item?._id}
-            />
+            <SheetClose className="flex bg-slate-300 rounded-md my-2 hover:bg-slate-500 transition-all duration-100 cursor-pointer w-full" key={item?._id}>
+              <SearchFriend
+                name={item?.name}
+                email={item?.email}
+                pic={item?.pic}
+                userId={item?._id}
+              />
+            </SheetClose>
           ))
         )}
       </SheetContent>

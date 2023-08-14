@@ -73,7 +73,6 @@ export const createGroupChat = async (req, res) => {
       .json({message : "More than two users are required to form a group chat"});
   }
   users.push(req.user);
-  console.log(users)
 
   try{
     const groupChat = await Chat.create({
@@ -92,3 +91,44 @@ export const createGroupChat = async (req, res) => {
     res.status(400).json({message:"Something went wrong. Please try again"})
   }
 };
+
+export const renameGroup = async(req,res) => {
+  try{
+    const { chatId, chatName } = req.body;
+    const updatedChat = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        chatName: chatName,
+      },
+      {
+        new:true, 
+      }
+    ).populate("users","-password")
+    .populate("groupAdmin","-password");
+    if(!updatedChat){
+      return res.status(404).json({message: "Chat not found"});
+    }
+    else{
+      res.status(200).json(updatedChat);
+    }
+  }catch(err){
+    res.status(500).json(err);
+  }
+}
+
+export const removeFromGroup =async (req, res) => {
+  const {chatId,userId} = req.body;
+  const removed = await Chat.findByIdAndUpdate(chatId,
+    {
+      $pull:{users:userId},
+    },{
+      new:true,
+    }).populate("users","-password")
+    .populate("groupAdmin","-password");
+    if(!removed){
+      res.status(404).json({message: "Chat not found"});
+    }else{
+      res.status(200).json(removed);
+    }
+    console.log(req.body)
+}

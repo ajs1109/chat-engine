@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import cors from 'cors';
 import userRouter from './routes/users.js'
 import chatRouter from './routes/chats.js'
+import messagesRouter from './routes/messages.js'
 
 const app = express();
 app.use(bodyParser.json({limit:'300mb',extended:true}));
@@ -15,7 +16,7 @@ app.use('/uploads',express.static('uploads'))
 
 app.use('/user',userRouter);
 app.use('/chat',chatRouter);
-
+app.use('/messages', messagesRouter);
 
 const PORT = process.env.PORT 
 
