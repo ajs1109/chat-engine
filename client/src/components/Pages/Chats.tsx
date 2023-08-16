@@ -16,7 +16,7 @@ const Chats = () => {
   }, []);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-[#B9D0E9] text-[#0E2239]">
       <MainNav
         name={user?.result?.name}
         email={user?.result?.email}
@@ -25,7 +25,6 @@ const Chats = () => {
       <div className="sm:mx-3 sm:flex h-[680px] mt-4">
         <MyChats />
         <Chat />
-        
       </div>
     </div>
   );

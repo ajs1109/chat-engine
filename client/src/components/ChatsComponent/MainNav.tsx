@@ -10,14 +10,16 @@ interface MainNavProps {
 
 const MainNav: React.FC<MainNavProps> = ({pic,name,email}) => {
   return (
-    <div className="sticky top-0 h-12 w-full bg-muted flex items-center justify-between">
-      <SheetDemo/>
+    <div className="sticky top-0 h-12 w-full  flex items-center justify-between bg-[#B9D0E9] ">
+      <SheetDemo />
       <div className="heading my-auto">
-        <h1 className="font-semibold text-lg tracking-wider ">ChatterBox</h1>
+        <h1 className="font-semibold text-lg tracking-wider text-[#0E2239]">
+          ChatterBox
+        </h1>
       </div>
       <div className="flex gap-4">
         <Bell className="my-auto" />
-        <AvatarDemo name={name} pic={pic} email={email}  />
+        <AvatarDemo name={name} pic={pic} email={email} />
       </div>
     </div>
   );

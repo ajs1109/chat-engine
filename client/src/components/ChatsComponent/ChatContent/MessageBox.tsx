@@ -12,7 +12,7 @@ const MessageBox = ({sender,content,classs,pict}:{sender:User,content:string,cla
         />
         <AvatarFallback>{sender.name[0].toUpperCase()}</AvatarFallback>
       </Avatar>
-      <div className='bg-slate-500 rounded-lg px-2 pt-[2px] h-8'>{content}</div>
+      <div className='bg-[#0071d9] text-[#b5babf] font- rounded-lg px-2 pt-[2px] h-8'>{content}</div>
     </div>
   );
 }

@@ -98,6 +98,7 @@ const HomePage = () => {
                   name="email"
                   type="email"
                   placeholder="example@abc.com"
+                  autoFocus
                 />
               </div>
               <div className="space-y-1">
@@ -132,6 +133,7 @@ const HomePage = () => {
                   onChange={handleChange}
                   name="fname"
                   placeholder="First Name"
+                  autoFocus
                 />
               </div>
               <div className="space-y-1">

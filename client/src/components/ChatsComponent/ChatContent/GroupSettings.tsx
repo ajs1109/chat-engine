@@ -22,8 +22,8 @@ export const GroupSettings = () => {
     const {activeChat} = useSelector(
         (state: currentChatProps) => state.activeChat
     );
-        //@ts-ignore
-    const currentUser: User = JSON.parse(localStorage.getItem('profile'));
+
+    const currentUser: User = JSON.parse(localStorage.getItem('profile') || "");
 
     const [open, setOpen] = useState(false);
     const [loading,setLoading] = useState(false);
