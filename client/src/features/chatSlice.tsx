@@ -1,6 +1,7 @@
+import { messageProps } from "@/components/ChatsComponent/ChatContent/ChatBox";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-interface Chats {
+export interface Chats {
   chats: Chat[] | null;
 }
 
@@ -9,6 +10,7 @@ export interface Chat {
   chatName: string;
   isGroupChat: boolean;
   users: User[];
+  latestMessage?: messageProps;
   createdAt: string;
   updatedAt: string;
   __v: number;

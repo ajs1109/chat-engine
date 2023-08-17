@@ -6,14 +6,18 @@ import { activeChatProps } from "@/features/activeChat";
 import { Chat, User } from "@/features/chatSlice";
 import { SendHorizonal } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import Lottie from 'react-lottie-player';
+import Lottie from "react-lottie-player";
 import { useDispatch, useSelector } from "react-redux";
-import io from 'socket.io-client';
-import typingg from '../../animations/typing.json';
-import { isLastMessage, isSameSender, isSameSenderMargin } from "./messageLogic";
+import io from "socket.io-client";
+import typingg from "../../animations/typing.json";
+import {
+  isLastMessage,
+  isSameSender,
+  isSameSenderMargin,
+} from "./messageLogic";
 import { commonDataProps, sendNotification } from "@/features/commonData";
 
-interface currentChatProps {
+export interface currentChatProps {
   activeChat: activeChatProps;
 }
 
@@ -27,37 +31,39 @@ export interface messageProps {
   sender: User;
 }
 
-const ENDPOINT = 'http://localhost:5000';
+export interface newMessageReceivedProps {
+  commonData: commonDataProps;
+}
 
-var socket:any,selectedChatCompare:any;
+const ENDPOINT = "http://localhost:5000";
+
+var socket: any, selectedChatCompare: any;
 
 const ChatBox = () => {
-
-
-  const dispatch = useDispatch()
-  const { result } = JSON.parse(localStorage.getItem("profile") || "")
+  const dispatch = useDispatch();
+  const { result } = JSON.parse(localStorage.getItem("profile") || "");
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
   const [activeMessages, setActiveMessages] = useState<messageProps[] | []>([]);
   const { activeChat } = useSelector(
     (state: currentChatProps) => state.activeChat
   );
-  
-  const notifiactionData = useSelector((state:commonDataProps) => state.notificationData)
-  console.log("notifiactionData : ",notifiactionData)
-  const [socketConnected,setSocketConnected] = useState(false);
-  const [typing,setTyping] = useState(false);
-  const [isTyping,setIsTyping] = useState(false);
 
+  const { notificationData } = useSelector(
+    (state: newMessageReceivedProps) => state.commonData
+  );
 
-    useEffect(() => {
-      socket = io(ENDPOINT);
-      socket.emit("setup", result);
-      socket.on("connected", () => setSocketConnected(true));
-      socket.on("typing",() => setIsTyping(true));
-      socket.on("stop typing",() => setIsTyping(false));
-    });
- 
+  const [socketConnected, setSocketConnected] = useState(false);
+  const [typing, setTyping] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", result);
+    socket.on("connected", () => setSocketConnected(true));
+    socket.on("typing", () => setIsTyping(true));
+    socket.on("stop typing", () => setIsTyping(false));
+  });
 
   const sendMessage = async () => {};
 
@@ -67,77 +73,78 @@ const ChatBox = () => {
       const { data } = await axios.get(
         `/messages/getMessages/${activeChat?._id}`
       );
-    
+
       setActiveMessages(data);
-      console.log(activeMessages)
     } catch (err: any) {
       console.log(err.response.data);
     } finally {
       setLoading(false);
-      console.log(activeChat?._id)
-      socket.emit("join chat",activeChat?._id);
+
+      socket.emit("join chat", activeChat?._id);
     }
   };
 
   useEffect(() => {
     activeChatMessage();
-    selectedChatCompare = activeChat
+    selectedChatCompare = activeChat;
   }, [activeChat]);
 
-
-
   useEffect(() => {
-    socket.on("message received", ( newMessageReceived:messageProps) => {
-      if(!selectedChatCompare || selectedChatCompare._id!== newMessageReceived.chat._id) {
-        //give notification
-        if(!notifiactionData?.includes(newMessageReceived)){
-          dispatch(sendNotification(newMessageReceived))
-        }
-      }
+    socket.on(
+      "message received",
+      (newMessageReceived: messageProps) => {
+        if (
+          !selectedChatCompare ||
+          selectedChatCompare._id !== newMessageReceived.chat._id
+        ) {
+          //give notification
 
-      else{
-        setActiveMessages([...activeMessages,newMessageReceived])
-      }
-    })
-  })
+          if (!notificationData?.includes(newMessageReceived)) {
+            dispatch(sendNotification(newMessageReceived));
+          }
+        } else {
+          setActiveMessages([...activeMessages, newMessageReceived]);
+        }
+      },
+      []
+    );
+  });
 
   const handlePress = async (e: any) => {
     if (e.key === "Enter" && content.length > 0) {
-      socket.emit("stop typing",activeChat?._id);
+      socket.emit("stop typing", activeChat?._id);
       let chatId = activeChat?._id;
       await axios
         .post("/messages/sendMessage", { content, chatId })
         .then((res) => {
-          console.log(res);
-          socket.emit('new message' , res.data);
-          setActiveMessages([...activeMessages,res.data]);
+          socket.emit("new message", res.data);
+          setActiveMessages([...activeMessages, res.data]);
         })
         .catch((err) => console.log(err.response.data));
       setContent("");
     }
-  }
+  };
 
-const typingHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
-  setContent(e.target.value);
-  if(!socketConnected)return ;
-  if(!typing) {
-    setTyping(true);
-    socket.emit("typing",activeChat?._id);
-  }
-
-  let lastTypingTime = new Date().getTime();
-  var timerLength = 3000;
-  setTimeout(() => {
-    var timeNow = new Date().getTime();
-    var timeDiff = timeNow - lastTypingTime;
-    if(timeDiff >= timerLength && typing){
-      socket.emit("stop typing",activeChat?._id)
-      setTyping(false);
+  const typingHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(e.target.value);
+    if (!socketConnected) return;
+    if (!typing) {
+      setTyping(true);
+      socket.emit("typing", activeChat?._id);
     }
-  },timerLength);
-}
 
-  
+    let lastTypingTime = new Date().getTime();
+    var timerLength = 3000;
+    setTimeout(() => {
+      var timeNow = new Date().getTime();
+      var timeDiff = timeNow - lastTypingTime;
+      if (timeDiff >= timerLength && typing) {
+        socket.emit("stop typing", activeChat?._id);
+        setTyping(false);
+      }
+    }, timerLength);
+  };
+
   return (
     <div className=" flex flex-col-reverse rounded-md w-full h-[620px] bg-[#101b21]">
       <div className="flex gap-2 w-full relative">
@@ -202,7 +209,6 @@ const typingHandler = (e:React.ChangeEvent<HTMLInputElement>) => {
 };
 
 export default ChatBox;
-
 
 // {
 //               if (

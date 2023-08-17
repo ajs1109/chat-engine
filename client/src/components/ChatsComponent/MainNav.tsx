@@ -2,6 +2,8 @@ import { SheetDemo } from '@/components/ChatsComponent/SearchUser';
 import { Bell } from "lucide-react";
 import React from "react";
 import { AvatarDemo } from "./AvatarDemo";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import Notifications from './Notifications';
 interface MainNavProps {
     name:string;
     email:string;
@@ -18,7 +20,7 @@ const MainNav: React.FC<MainNavProps> = ({pic,name,email}) => {
         </h1>
       </div>
       <div className="flex gap-4">
-        <Bell className="my-auto" />
+        <Notifications/>
         <AvatarDemo name={name} pic={pic} email={email} />
       </div>
     </div>

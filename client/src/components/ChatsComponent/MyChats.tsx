@@ -37,18 +37,22 @@ const MyChats = () => {
     <div className="basis-[30%] sm:min-w-[300px] my-auto sm:h-[680px] flex flex-col rounded-md bg-slate-200 p-2">
       <div className="flex justify-between items-center">
         <div className="text-lg font-mono">My Chats</div>
-        <DialogDemo setGroupCreated={setGroupCreated} groupCreated={groupCreated} />
+        <DialogDemo
+          setGroupCreated={setGroupCreated}
+          groupCreated={groupCreated}
+        />
       </div>
-      <div className="flex flex-col gap-2 mt-4 overflow-auto h-full no-scrollbar"> 
+      <div className="flex flex-col gap-2 mt-4 overflow-auto h-full no-scrollbar">
         {chats.map((item, index) =>
           item.isGroupChat ? (
-            <div className="bg-slate-300 hover:bg-slate-400 sm:rounded-md flex p-2 cursor-pointer" key={index} onClick={() => handleActiveChat(item)} >
+            <div
+              className="bg-slate-300 hover:bg-slate-400 sm:rounded-md flex p-2 cursor-pointer"
+              key={index}
+              onClick={() => handleActiveChat(item)}
+            >
               <div>
                 <Avatar className="m-auto">
-                  <AvatarImage
-                    src=""
-                    alt="@shadcn"
-                  />
+                  <AvatarImage src="" alt="@shadcn" />
                   <AvatarFallback>
                     {item.chatName[0].toUpperCase()}
                   </AvatarFallback>
@@ -58,11 +62,19 @@ const MyChats = () => {
                 <div className="text-sm font-semibold tracking-wide">
                   {item.chatName}
                 </div>
-                <div className="text-xs">latestMessage</div>
+                {item.latestMessage?.content ? (
+                  <div className="text-xs">{item.latestMessage.sender.name} : {item.latestMessage?.content}</div>
+                ) : (
+                  <div className="text-xs">Start a chat</div>
+                )}
               </div>
             </div>
           ) : (
-            <div className="bg-slate-300 hover:bg-slate-400 sm:rounded-md flex sm:p-2" key={index} onClick={() => handleActiveChat(item)}>
+            <div
+              className="bg-slate-300 hover:bg-slate-400 sm:rounded-md flex sm:p-2"
+              key={index}
+              onClick={() => handleActiveChat(item)}
+            >
               <div>
                 <Avatar className="m-auto">
                   <AvatarImage
@@ -84,7 +96,8 @@ const MyChats = () => {
                     ? item.users[1].name
                     : item.users[0].name}
                 </div>
-                <div className="text-xs">latestMessage</div>
+                <div className="text-xs">latest</div>
+                {console.log(item)}
               </div>
             </div>
           )
