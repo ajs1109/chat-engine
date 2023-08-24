@@ -36,7 +36,7 @@ export interface newMessageReceivedProps {
   commonData: commonDataProps;
 }
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://chat-application-9r1e.onrender.com";
 
 var socket: any, selectedChatCompare: any;
 
