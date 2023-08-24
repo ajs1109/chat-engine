@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'http://localhost:5000'
+    baseURL: 'https://chat-application-9r1e.onrender.com'
 })
 
 instance.interceptors.request.use((req:any)=> {
