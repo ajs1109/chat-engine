@@ -10,7 +10,7 @@ interface currentChatProps {
 }
 
 const ChatPage = () => {
-  const [loading,setLoading] =useState(false);
+
   const { activeChat } = useSelector((state: currentChatProps) => {
     return state.activeChat;
   });
@@ -19,7 +19,7 @@ const ChatPage = () => {
   const isGroup = activeChat?.isGroupChat;
   //@ts-ignore
   const { result } = JSON.parse(localStorage.getItem("profile"));
-  const [zz, setZz] = useState<number>(-10);
+
   useEffect(() => {
     setDisplay(activeChat)
     

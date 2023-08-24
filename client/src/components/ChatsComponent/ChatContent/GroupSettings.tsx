@@ -29,6 +29,7 @@ export const GroupSettings = () => {
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  setLoading(false);
 
   const [name, setName] = useState(activeChat?.chatName);
   const [deletedUser, setDeletedUser] = useState<User | null>(null);
@@ -57,7 +58,7 @@ export const GroupSettings = () => {
 
   const LeaveGroup = async () => {
     try {
-      const chatId = activeChat?._id;
+      // const chatId = activeChat?._id;
       const { data } = await axios.put("/chat/deleteGroup", { activeChat });
       console.log(data);
       setOpen(false);

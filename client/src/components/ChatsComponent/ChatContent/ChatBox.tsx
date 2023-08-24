@@ -16,8 +16,7 @@ import {
   isSameSenderMargin,
 } from "./messageLogic";
 import { commonDataProps, sendNotification } from "@/features/commonData";
-import ScrolableFeed from 'react-scrollable-feed'
-
+// import ScrolableFeed from 'react-scrollable-feed'
 
 export interface currentChatProps {
   activeChat: activeChatProps;
@@ -66,8 +65,6 @@ const ChatBox = () => {
     socket.on("typing", () => setIsTyping(true));
     socket.on("stop typing", () => setIsTyping(false));
   });
-
-
 
   const activeChatMessage = async () => {
     try {
@@ -147,8 +144,6 @@ const ChatBox = () => {
     }, timerLength);
   };
 
-
-
   return !loading ? (
     <div className=" flex flex-col-reverse rounded-md z-10 w-full h-[620px] bg-[#101b21]">
       <div className="flex gap-2 w-full relative">
@@ -168,7 +163,7 @@ const ChatBox = () => {
           <SendHorizonal className="absolute left-[8px] z-10" />
         </Button>
       </div>
-      <ScrolableFeed className="h-[620px] flex flex-col no-scrollbar">
+      <div className="h-[620px] flex flex-col no-scrollbar">
         {activeMessages.length > 0 &&
           activeMessages.map((message: messageProps, index: number) => (
             <div className="flex space-x-1 items-center" key={index}>
@@ -204,14 +199,11 @@ const ChatBox = () => {
             <Lottie loop animationData={typingg} play className="w-12" />
           </div>
         )}
-      </ScrolableFeed>
+      </div>
     </div>
   ) : (
-    <div className="flex flex-col-reverse rounded-md z-10 w-full h-[620px] bg-[#101b21]">
-      
-    </div>
+    <div className="flex flex-col-reverse rounded-md z-10 w-full h-[620px] bg-[#101b21]"></div>
   );
 };
 
 export default ChatBox;
-

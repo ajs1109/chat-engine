@@ -1,8 +1,6 @@
 import { SheetDemo } from '@/components/ChatsComponent/SearchUser';
-import { Bell } from "lucide-react";
 import React from "react";
 import { AvatarDemo } from "./AvatarDemo";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import Notifications from './Notifications';
 interface MainNavProps {
     name:string;

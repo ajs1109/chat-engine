@@ -1,13 +1,11 @@
 import { authSignin } from "@/features/userSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Chat from "../ChatsComponent/Chat";
 import MainNav from "../ChatsComponent/MainNav";
 import MyChats from "../ChatsComponent/MyChats";
 
 const Chats = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("profile") || "{}");
 

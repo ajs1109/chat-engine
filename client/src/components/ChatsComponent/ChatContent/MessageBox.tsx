@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { User } from '@/features/chatSlice'
-import React from 'react'
+
 
 const MessageBox = ({sender,content,classs,pict}:{sender:User,content:string,classs:string,pict:string}) => {
   return (

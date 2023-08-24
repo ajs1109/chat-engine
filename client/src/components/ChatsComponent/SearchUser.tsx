@@ -1,20 +1,18 @@
+import axios from '@/axios/axios';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
+  SheetTrigger
 } from "@/components/ui/sheet";
 import { Search } from "lucide-react";
+import { useState } from "react";
 import SearchFriend from "./SearchFriend";
-import { useEffect, useState } from "react";
-import axios from '@/axios/axios'
 import { SkeletonDemo } from "./SkeletonDemo";
 
 type userProps = {

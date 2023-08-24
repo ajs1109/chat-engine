@@ -1,7 +1,7 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { Bell } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { currentChatProps, messageProps, newMessageReceivedProps } from './ChatContent/ChatBox';
+import { messageProps, newMessageReceivedProps } from './ChatContent/ChatBox';
 import { Badge } from '../ui/badge';
 import { setActiveChat } from '@/features/activeChat';
 import { seen } from '@/features/commonData';

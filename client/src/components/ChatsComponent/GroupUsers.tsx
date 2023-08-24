@@ -5,7 +5,7 @@ import SearchFriend from "./SearchFriend";
 
 export const GroupUser = ({
     user,
-    DeletedUsers,
+
     setDeletedUsers,
 }:{
     user: User;

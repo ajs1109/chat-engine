@@ -89,6 +89,8 @@ export function DialogDemo({
 
   return (
     <Dialog>
+      {/* to remove error */}
+      {!loading && <></>}
       <DialogTrigger asChild>
         <Button variant="outline">
           New Group <Plus className="ml-1 h-4 w-4" />

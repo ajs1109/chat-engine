@@ -1,12 +1,12 @@
-import React,{useState} from 'react'
+
 import axios from 'axios'
 import { Input } from './input'
 
 const ImageUpload = () => {
     const preset_key = ''
     const cloud_name = ''
-    const [image, setImage] = useState();
-    function handleFile(event){
+
+    function handleFile(event:any){
         const file = event.target.files[0];
         const formData = new FormData();
         formData.append('file', file)
