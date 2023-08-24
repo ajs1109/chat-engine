@@ -29,11 +29,11 @@ mongoose.connect(CONNECTION_URL)
 .then(()=> {
     const server = app.listen(PORT,() => console.log('Server is listening on port', PORT))
     const io = new Server(server, {
-        pingTimeout: 60000,
-        cors:{
-            origin: 'http://localhost:5173',
-        }
-    })
+      pingTimeout: 60000,
+      cors: {
+        origin: "https://chat-engine-gules.vercel.app",
+      },
+    });
     io.on("connection", (socket) => {
       console.log("connected to socket.io");
       socket.on("setup",(userData)=> {
