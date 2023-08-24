@@ -91,10 +91,10 @@ export function DialogDemo({
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline">
-          New Group Chat <Plus className="ml-1 h-4 w-4" />
+          New Group <Plus className="ml-1 h-4 w-4" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] flex flex-col max-h-[80%]">
         <DialogHeader>
           <DialogTitle>Create a Group</DialogTitle>
           <DialogDescription>
@@ -112,7 +112,7 @@ export function DialogDemo({
               className="col-span-3"
             />
           </div>
-          <div className="grid w-full p-2 mx-auto gap-4">
+          <div className="grid w-full pt-2 px-2 mx-auto gap-4">
             <Input
               id="username"
               placeholder="Add Friends"
@@ -122,7 +122,7 @@ export function DialogDemo({
             />
           </div>
         </div>
-        <div className="overflow-auto flex flex-nowrap no-scrollbar">
+        <div className="overflow-auto py-3 h-fit flex flex-nowrap no-scrollbar">
           {users.map((item: User, index: number) => (
             <Badge
               className="hover:cursor-pointer mr-1 my-0.5 h-5 w-fit flex flex-nowrap"
@@ -135,7 +135,7 @@ export function DialogDemo({
             </Badge>
           ))}
         </div>
-        <div>
+        <div className="h-full overflow-auto no-scrollbar">
           {newArray.map((item) => (
             <div
               className="flex bg-slate-300 rounded-md my-2 hover:bg-slate-500 transition-all duration-100 cursor-pointer w-full"

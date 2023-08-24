@@ -49,7 +49,7 @@ export const signUp = async (req, res) => {
         id: result._id,
       },
       "test",
-      { expiresIn: "2h" }
+      { expiresIn: "365d" }
     );
     res.status(200).json({ result, token });
   } catch (err) {

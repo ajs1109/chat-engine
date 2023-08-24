@@ -16,6 +16,8 @@ import {
   isSameSenderMargin,
 } from "./messageLogic";
 import { commonDataProps, sendNotification } from "@/features/commonData";
+import ScrolableFeed from 'react-scrollable-feed'
+
 
 export interface currentChatProps {
   activeChat: activeChatProps;
@@ -65,7 +67,7 @@ const ChatBox = () => {
     socket.on("stop typing", () => setIsTyping(false));
   });
 
-  const sendMessage = async () => {};
+
 
   const activeChatMessage = async () => {
     try {
@@ -145,8 +147,10 @@ const ChatBox = () => {
     }, timerLength);
   };
 
-  return (
-    <div className=" flex flex-col-reverse rounded-md w-full h-[620px] bg-[#101b21]">
+
+
+  return !loading ? (
+    <div className=" flex flex-col-reverse rounded-md z-10 w-full h-[620px] bg-[#101b21]">
       <div className="flex gap-2 w-full relative">
         <Input
           style={{ backgroundColor: "#202d35" }}
@@ -157,107 +161,57 @@ const ChatBox = () => {
           onKeyDown={handlePress}
         />
 
-        <Button className="bg-[#0071d9] absolute bottom-[9px] h-[38px] w-[38px] right-[9px] rounded-full">
+        <Button
+          className="bg-[#0071d9] absolute bottom-[9px] h-[38px] w-[38px] right-[9px] rounded-full"
+          onClick={handlePress}
+        >
           <SendHorizonal className="absolute left-[8px] z-10" />
         </Button>
       </div>
-
-      <div className="h-[620px] overflow-auto no-scrollbar flex flex-col-reverse">
-        {isTyping ? (
-          <div className="w-fit ml-[60px] h-8 bg-[#0071d9] text-[#b5babf] rounded-full px-2 pt-[2px] m-2">
+      <ScrolableFeed className="h-[620px] flex flex-col no-scrollbar">
+        {activeMessages.length > 0 &&
+          activeMessages.map((message: messageProps, index: number) => (
+            <div className="flex space-x-1 items-center" key={index}>
+              {(isSameSender(activeMessages, message, index, result._id) ||
+                isLastMessage(activeMessages, index, result._id)) && (
+                <Avatar className="ml-4 h-8 w-8 mr-2">
+                  <AvatarImage
+                    src={`http://localhost:5000/uploads/profilePicture/${message.sender.pic}`}
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>
+                    {message.sender.name[0].toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+              )}
+              <div
+                className="bg-[#0071d9] text-justify max-w-[50%] text-[#ffffff] min-w-[30px] rounded-lg py-auto px-2 pt-[0px] h-fit m-2"
+                style={{
+                  marginLeft: isSameSenderMargin(
+                    activeMessages,
+                    message,
+                    index,
+                    result._id
+                  ),
+                }}
+              >
+                <p className="max-w-full break-all">{message.content} </p>
+              </div>
+            </div>
+          ))}
+        {isTyping && (
+          <div className="w-fit ml-[60px] h-8 bg-[#0071d9] text-[#b5babf] rounded-xl px-2 pt-[2px] m-2">
             <Lottie loop animationData={typingg} play className="w-12" />
           </div>
-        ) : (
-          <></>
         )}
-        {activeMessages.length > 0 &&
-          activeMessages
-            .slice(0)
-            .reverse()
-            .map((message: messageProps, index: number) => (
-              <div className="flex space-x-1 items-center" key={index}>
-                {(isSameSender(activeMessages, message, index, result._id) ||
-                  isLastMessage(activeMessages, index, result._id)) && (
-                  <Avatar className="ml-4 h-8 w-8 mr-2">
-                    <AvatarImage
-                      src={`http://localhost:5000/uploads/profilePicture/${message.sender.pic}`}
-                      alt="@shadcn"
-                    />
-                    <AvatarFallback>
-                      {message.sender.name[0].toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
-                )}
-                <div
-                  className="bg-[#0071d9] text-[#ffffff] min-w-[30px] rounded-full px-2 pt-[2px] h-8 m-2"
-                  style={{
-                    marginLeft: isSameSenderMargin(
-                      activeMessages,
-                      message,
-                      index,
-                      result._id
-                    ),
-                  }}
-                >
-                  {message.content}
-                </div>
-              </div>
-            ))}
-      </div>
+      </ScrolableFeed>
+    </div>
+  ) : (
+    <div className="flex flex-col-reverse rounded-md z-10 w-full h-[620px] bg-[#101b21]">
+      
     </div>
   );
 };
 
 export default ChatBox;
 
-// {
-//               if (
-//                 index > 0 &&
-//                 activeMessages[index].sender.email ===
-//                   activeMessages[index - 1].sender.email
-//               ) {
-//                 if (message.sender.email === result.email) {
-//                   return (
-//                     <MessageBox
-//                       classs="flex flex-row-reverse direction-reverse gap-2 m-2 mr-14 items-center "
-//                       sender={message.sender}
-//                       content={message.content}
-//                       key={message._id}
-//                       pict="hidden"
-//                     />
-//                   );
-//                 } else {
-//                   return (
-//                     <MessageBox
-//                       classs=" flex gap-2 ml-14 m-2 items-center "
-//                       sender={message.sender}
-//                       content={message.content}
-//                       key={message._id}
-//                       pict="hidden"
-//                     />
-//                   );
-//                 }
-//               } else {
-//                 if (message.sender.email === result.email) {
-//                   return (
-//                     <MessageBox
-//                       classs="flex flex-row-reverse direction-reverse gap-2 m-2 items-center "
-//                       sender={message.sender}
-//                       content={message.content}
-//                       key={message._id}
-//                       pict=""
-//                     />
-//                   );
-//                 } else {
-//                   return (
-//                     <MessageBox
-//                       classs=" flex gap-2 m-2 items-center"
-//                       sender={message.sender}
-//                       content={message.content}
-//                       key={message._id}
-//                       pict=""
-//                     />
-//                   );
-//                 }
-//               }
-//             }

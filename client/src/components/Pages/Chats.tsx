@@ -16,13 +16,13 @@ const Chats = () => {
   }, []);
 
   return (
-    <div className="flex flex-col h-full bg-[#B9D0E9] text-[#0E2239]">
+    <div className="flex flex-col h-[100vh] bg-[#B9D0E9] w-full text-[#0E2239]">
       <MainNav
         name={user?.result?.name}
         email={user?.result?.email}
         pic={user?.result?.pic}
       />
-      <div className="sm:mx-3 sm:flex h-[680px] mt-4">
+      <div className="sm:mx-3 flex flex-col relative md:flex-row h-full mt-4">
         <MyChats />
         <Chat />
       </div>

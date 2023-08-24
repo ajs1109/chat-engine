@@ -1,6 +1,5 @@
-import React from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { Bell, Divide } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentChatProps, messageProps, newMessageReceivedProps } from './ChatContent/ChatBox';
 import { Badge } from '../ui/badge';
@@ -12,8 +11,6 @@ const Notifications = () => {
   const { notificationData } = useSelector(
     (state: newMessageReceivedProps) => state.commonData
   );
-  const {activeChat} = useSelector((state:currentChatProps) => state.activeChat);
-
   const handleClick = (message:messageProps) => {
     dispatch(setActiveChat(message.chat));
     dispatch(seen(message));
@@ -21,7 +18,7 @@ const Notifications = () => {
   return (
     <div className="mt-auto w-full">
       <DropdownMenu>
-        <DropdownMenuTrigger>
+        <DropdownMenuTrigger asChild>
           <div className="relative w-full">
             {notificationData?.length && (
               <Badge className="w-4 h-4 flex justify-center right-[-3px] rounded-full top-[-6px] absolute p-0">

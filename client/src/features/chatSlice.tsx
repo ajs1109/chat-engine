@@ -1,6 +1,7 @@
 import { messageProps } from "@/components/ChatsComponent/ChatContent/ChatBox";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+
 export interface Chats {
   chats: Chat[] | null;
 }
@@ -43,24 +44,25 @@ const chatSlice = createSlice({
       console.log(state.chats);
     },
     editChatName: (state, action: PayloadAction<Chat>) => {
-        const newChats = state.chats?.filter(
-            chat => chat._id != action.payload._id
-        );
-        if(newChats) state.chats = newChats;
+      const newChats = state.chats?.filter(
+        (chat) => chat._id != action.payload._id
+      );
+      if (newChats) state.chats = newChats;
 
-        state.chats?.unshift(action?.payload);
+      state.chats?.unshift(action?.payload);
     },
     deleteUserFromGroup: (state, action: PayloadAction<Chat>) => {
-        const newChats = state.chats?.filter(
-            chat => chat._id !== action.payload._id
-        )
-        if(newChats) state.chats = newChats;
+      const newChats = state.chats?.filter(
+        (chat) => chat._id !== action.payload._id
+      );
+      if (newChats) state.chats = newChats;
 
-        state.chats?.unshift(action.payload);
-        
+      state.chats?.unshift(action.payload);
+      console.log(state.chats);
     },
   },
 });
 
 export default chatSlice.reducer;
-export const { chatsGetAll, chatsAddChat,editChatName,deleteUserFromGroup } = chatSlice.actions;
+export const { chatsGetAll, chatsAddChat, editChatName, deleteUserFromGroup } =
+  chatSlice.actions;
