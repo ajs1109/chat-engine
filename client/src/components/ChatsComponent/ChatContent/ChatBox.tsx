@@ -146,64 +146,7 @@ const ChatBox = () => {
     <div className="bg-white flex flex-col rounded-md mt-2 w-full min-h-[85%] md:h-[700px] sm:h-[600px] lg:h-[600px] ">
       <div className="w-full p-2 bg-muted flex flex-col min-h-[80%] justify-end overflow-y-auto no-scrollbar">
         <ScrollableFeed>
-          {loading ? (
-    <div className=" flex flex-col-reverse rounded-md z-10 w-full h-[620px] bg-[#101b21]">
-      <div className="flex gap-2 w-full relative">
-        <Input
-          style={{ backgroundColor: "#202d35" }}
-          className="m-2 rounded-full text-[#b5babf]"
-          placeholder="Send Message..."
-          value={content}
-          onChange={(e) => typingHandler(e)}
-          onKeyDown={handlePress}
-        />
-
-        <Button
-          className="bg-[#0071d9] absolute bottom-[9px] h-[38px] w-[38px] right-[9px] rounded-full"
-          onClick={handlePress}
-        >
-          <SendHorizonal className="absolute left-[8px] z-10" />
-        </Button>
-      </div>
-      <div className="h-[620px] flex flex-col no-scrollbar">
-        {activeMessages.length > 0 &&
-          activeMessages.map((message: messageProps, index: number) => (
-            <div className="flex space-x-1 items-center" key={index}>
-              {(isSameSender(activeMessages, message, index, result._id) ||
-                isLastMessage(activeMessages, index, result._id)) && (
-                <Avatar className="ml-4 h-8 w-8 mr-2">
-                  <AvatarImage
-                    src={`http://localhost:5000/uploads/profilePicture/${message.sender.pic}`}
-                    alt="@shadcn"
-                  />
-                  <AvatarFallback>
-                    {message.sender.name[0].toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-              )}
-              <div
-                className="bg-[#0071d9] text-justify max-w-[50%] text-[#ffffff] min-w-[30px] rounded-lg py-auto px-2 pt-[0px] h-fit m-2"
-                style={{
-                  marginLeft: isSameSenderMargin(
-                    activeMessages,
-                    message,
-                    index,
-                    result._id
-                  ),
-                }}
-              >
-                <p className="max-w-full break-all">{message.content} </p>
-              </div>
-            </div>
-          ))}
-        {isTyping && (
-          <div className="w-fit ml-[60px] h-8 bg-[#0071d9] text-[#b5babf] rounded-xl px-2 pt-[2px] m-2">
-            <Lottie loop animationData={typingg} play className="w-12" />
-          </div>
-        )}
-      </div>
-    </div>
-  ) : (     activeMessages &&
+          {loading ? : (<div className="flex flex-col-reverse rounded-md z-10 w-full h-[620px] bg-[#101b21]"></div>) (     activeMessages &&
             activeMessages.map((m, i) => (
               <div
                 key={m._id}
