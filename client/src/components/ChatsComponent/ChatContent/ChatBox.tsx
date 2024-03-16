@@ -12,7 +12,6 @@ import {
   isSameSender,
   isSameSenderMargin,
 } from "./messageLogic";
-import { MessageSkeleton } from "./MessageBoxSkeleton";
 import io from "socket.io-client";
 import Lottie from "react-lottie-player";
 import typingIndicator from "@/components/animations/typing.json";
