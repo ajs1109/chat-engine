@@ -56,7 +56,7 @@ const HomePage = () => {
 
         dispatch(authSignin(res.data));
       }
-      window.location.assign('/chats');
+      window.location.assign("/chats");
       toast.success("success");
     } catch (err: any) {
       toast.error("something went wrong");
@@ -113,7 +113,11 @@ const HomePage = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button onClick={handleClick} variant="outline" disabled={loading}>
+              <Button
+                onClick={handleClick}
+                variant="outline"
+                disabled={loading}
+              >
                 Sign In
               </Button>
             </CardFooter>
@@ -186,7 +190,11 @@ const HomePage = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button disabled={loading} variant="outline" onClick={handleClick}>
+              <Button
+                disabled={loading}
+                variant="outline"
+                onClick={handleClick}
+              >
                 Sign Up
               </Button>
             </CardFooter>

@@ -31,7 +31,7 @@ mongoose.connect(CONNECTION_URL)
     const io = new Server(server, {
       pingTimeout: 60000,
       cors: {
-        origin: "https://chat-engine-gules.vercel.app",
+        origin: "http://localhost:5173",
       },
     });
     io.on("connection", (socket) => {
@@ -59,5 +59,5 @@ mongoose.connect(CONNECTION_URL)
     
     });
 })
-.catch(err => console.log('Error connecting to port'))
+.catch(err => console.log('Error connecting to port', err))
 
