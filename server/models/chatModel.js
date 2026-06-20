@@ -8,6 +8,7 @@ const chatModel = mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+        required: true,
       },
     ],
     latestMessage: {
@@ -23,5 +24,7 @@ const chatModel = mongoose.Schema(
     timestamps: true,
   }
 );
+
+chatModel.index({ users: 1, updatedAt: -1 });
 
 export const Chat = mongoose.model("Chat", chatModel);

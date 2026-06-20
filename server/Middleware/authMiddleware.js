@@ -1,27 +1,31 @@
-import jwt from 'jsonwebtoken'
-import { User } from '../models/userModel.js';
+import jwt from "jsonwebtoken";
+import { User } from "../models/userModel.js";
 
-const auth =async (req, res,next) => {
-    let token;
+const auth = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  const secret = process.env.JWT_SECRET;
 
+  if (!secret) {
+    return res.status(500).json({ message: "JWT secret is not configured" });
+  }
 
-if(
-    req.headers.authorization && req.headers.authorization.startsWith('Bearer')
-)
-{
-    try{
-        token = req.headers.authorization.split(' ')[1];
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Not authorized, token missing" });
+  }
 
-        //decodes token id
-        const decoded = jwt.verify(token, 'test');
-        req.user = await User.findById(decoded.id).select('-password');
+  try {
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, secret);
+    req.user = await User.findById(decoded.id).select("-password");
 
-        next();
-
+    if (!req.user) {
+      return res.status(401).json({ message: "Not authorized, user not found" });
     }
-    catch(err){
-        res.status(401).json('not authorized')
-    }
-}
-}
+
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Not authorized, token failed" });
+  }
+};
+
 export default auth;

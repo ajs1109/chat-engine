@@ -1,14 +1,17 @@
 import axios from "axios";
+import { API_BASE_URL } from "@/lib/config";
+import { getStoredProfile } from "@/lib/profile";
 
 const instance = axios.create({
-    baseURL: 'https://chat-application-9r1e.onrender.com'
-})
+  baseURL: API_BASE_URL,
+});
 
-instance.interceptors.request.use((req:any)=> {
-    if(localStorage.getItem('profile'))(
-        req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile') || '{}')?.token}`
-    )
-    return req;
-})
+instance.interceptors.request.use((req) => {
+  const { token } = getStoredProfile();
+  if (token) {
+    req.headers.Authorization = `Bearer ${token}`;
+  }
+  return req;
+});
 
 export default instance;

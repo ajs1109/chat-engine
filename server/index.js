@@ -1,63 +1,140 @@
-import  express  from "express";
-import bodyParser from "body-parser";
-import 'dotenv/config'
+import "dotenv/config";
+import cors from "cors";
+import express from "express";
 import mongoose from "mongoose";
-import cors from 'cors';
-import userRouter from './routes/users.js'
-import chatRouter from './routes/chats.js'
-import messagesRouter from './routes/messages.js'
-import {Server} from 'socket.io'
-
+import next from "next";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import { Server } from "socket.io";
+import chatRouter from "./routes/chats.js";
+import messagesRouter from "./routes/messages.js";
+import userRouter from "./routes/users.js";
 
 const app = express();
-app.use(bodyParser.json({limit:'300mb',extended:true}));
-app.use(bodyParser.urlencoded({ extended:true,limit:'300mb' }));
-app.use(cors());
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+let nextHandler;
 
+const PORT = Number(process.env.PORT || 5000);
+const CONNECTION_URL = process.env.CONNECTION_URL;
+const SERVE_NEXT = process.env.SERVE_NEXT === "true";
+const corsOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
-app.use('/uploads',express.static('uploads'))
+if (!CONNECTION_URL) {
+  throw new Error("CONNECTION_URL is required");
+}
 
-app.use('/user',userRouter);
-app.use('/chat',chatRouter);
-app.use('/messages', messagesRouter);
+app.all("/api/*", (req, res, nextMiddleware) => {
+  if (!nextHandler) {
+    nextMiddleware();
+    return;
+  }
 
-const PORT = process.env.PORT 
+  nextHandler(req, res);
+});
 
-const CONNECTION_URL = process.env.CONNECTION_URL
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use(
+  cors({
+    origin: corsOrigins,
+    credentials: true,
+  })
+);
 
-mongoose.connect(CONNECTION_URL)
-.then(()=> {
-    const server = app.listen(PORT,() => console.log('Server is listening on port', PORT))
+app.use("/uploads", express.static("uploads"));
+app.use("/user", userRouter);
+app.use("/chat", chatRouter);
+app.use("/messages", messagesRouter);
+
+let server;
+
+const startServer = async () => {
+  try {
+    if (SERVE_NEXT) {
+      const nextApp = next({
+        dev: process.env.NODE_ENV !== "production",
+        dir: path.resolve(__dirname, "../web"),
+      });
+      nextHandler = nextApp.getRequestHandler();
+      await nextApp.prepare();
+    }
+
+    await mongoose.connect(CONNECTION_URL, {
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 30000,
+      maxPoolSize: 20,
+      minPoolSize: 2,
+      maxIdleTimeMS: 300000,
+    });
+
+    if (nextHandler) {
+      app.all("*", (req, res) => nextHandler(req, res));
+    }
+
+    server = app.listen(PORT, () => {
+      console.log("Server is listening on port", PORT);
+    });
+
     const io = new Server(server, {
       pingTimeout: 60000,
       cors: {
-        origin: "http://localhost:5173",
+        origin: corsOrigins,
+        credentials: true,
       },
     });
+
     io.on("connection", (socket) => {
-      console.log("connected to socket.io");
-      socket.on("setup",(userData)=> {
-        console.log(userData._id);
+      socket.on("setup", (userData) => {
+        if (!userData?._id) {
+          return;
+        }
         socket.join(userData._id);
         socket.emit("connected");
-      })
-      socket.on("join chat", room => {
+      });
+
+      socket.on("join chat", (room) => {
         socket.join(room);
-        console.log("user joined room : ",room);
-      })
-        socket.on("typing" , (room) => socket.in(room).emit("typing"))
-      socket.on("stop typing" , (room) => socket.in(room).emit("stop typing"))
+      });
+
+      socket.on("typing", (room) => socket.in(room).emit("typing"));
+      socket.on("stop typing", (room) => socket.in(room).emit("stop typing"));
+
       socket.on("new message", (newMessageReceived) => {
-        var chat = newMessageReceived.chat;
-        if(!chat.users) return console.log("chat.users is not defined")
-        chat.users.forEach(user => {
-            if(user._id === newMessageReceived.sender._id) return;
-            socket.in(user._id).emit("message received",newMessageReceived);
-        })
-      })
+        const chat = newMessageReceived.chat;
+        if (!chat?.users) {
+          return;
+        }
 
-    
+        chat.users.forEach((user) => {
+          if (user._id === newMessageReceived.sender._id) {
+            return;
+          }
+          socket.in(user._id).emit("message received", newMessageReceived);
+        });
+      });
     });
-})
-.catch(err => console.log('Error connecting to port', err))
+  } catch (err) {
+    console.log("Error connecting to mongo/server", err);
+  }
+};
 
+const shutdown = async () => {
+  try {
+    await mongoose.connection.close();
+    if (server) {
+      server.close(() => process.exit(0));
+      return;
+    }
+    process.exit(0);
+  } catch (err) {
+    process.exit(1);
+  }
+};
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
+
+startServer();

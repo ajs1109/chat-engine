@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 197 87% 36%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 38 84% 56%;
+    --secondary-foreground: 24 20% 12%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 166 64% 42%;
+    --accent-foreground: 170 30% 10%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 197 87% 36%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 25% 8%;
+    --foreground: 210 40% 98%;
+    --card: 225 23% 12%;
+    --card-foreground: 210 40% 98%;
+    --popover: 225 23% 12%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 190 86% 44%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 43 92% 55%;
+    --secondary-foreground: 25 20% 10%;
+    --muted: 220 18% 16%;
+    --muted-foreground: 215 16% 68%;
+    --accent: 159 60% 44%;
+    --accent-foreground: 170 30% 9%;
+    --destructive: 0 63% 48%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 18% 20%;
+    --input: 220 18% 20%;
+    --ring: 190 86% 44%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+.chat-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.35) transparent;
+}
+
+.chat-scrollbar::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.28);
+  border-radius: 999px;
+}

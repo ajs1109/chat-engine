@@ -1,0 +1,12 @@
+node_modules/
+.next/
+dist/
+build/
+.env
+.env.local
+.env.*.local
+.DS_Store
+server/.npm-cache/
+web/.next/
+web/public/uploads/chat/*
+!web/public/uploads/chat/.gitkeep

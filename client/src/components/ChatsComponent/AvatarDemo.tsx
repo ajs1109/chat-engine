@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { authLogout } from "@/features/userSlice";
+import { getProfileImageUrl } from "@/lib/config";
+import { getStoredProfile } from "@/lib/profile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ChevronDown, LogOut, Mail, User } from "lucide-react";
 import { Button } from "../ui/button";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,47 +11,45 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { authLogout } from "@/features/userSlice";
 import { useLocation } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
-//http://localhost:5000/uploads/profilePic/1691581008065-zoro.jpg
 type AvatarProps = {
   pic: string;
   name: string;
   email: string;
 };
+
 interface MyToken {
   email: string;
   _id: string;
   exp: number;
-  // whatever else is in the JWT.
 }
+
 export function AvatarDemo({ pic, name, email }: AvatarProps) {
   const dispatch = useDispatch();
-
   const location = useLocation();
+  const user = getStoredProfile();
 
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("profile") || "")
-  );
-
-  const logOut = async () => {
-    await dispatch(authLogout(user));
+  const logOut = useCallback(() => {
+    dispatch(authLogout());
     window.location.assign("/");
-    setUser("");
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     const token = user?.token;
     if (token) {
       const decodedToken = jwtDecode<MyToken>(token);
-      if (decodedToken.exp * 1000 < new Date().getTime()) logOut();
+      if (decodedToken.exp * 1000 < Date.now()) {
+        logOut();
+      }
     }
-  }, [location]);
+  }, [location, logOut, user?.token]);
+
   return (
-    <div className="">
+    <div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -58,7 +57,7 @@ export function AvatarDemo({ pic, name, email }: AvatarProps) {
             variant="ghost"
           >
             <Avatar>
-              <AvatarImage src={`http://localhost:5000/uploads/profilePicture/${pic}`} alt="@shadcn" />
+              <AvatarImage src={getProfileImageUrl(pic)} alt="profile" />
               <AvatarFallback>{name[0].toUpperCase()}</AvatarFallback>
             </Avatar>
             <ChevronDown className="h-5 w-5" />
@@ -83,3 +82,4 @@ export function AvatarDemo({ pic, name, email }: AvatarProps) {
     </div>
   );
 }
+

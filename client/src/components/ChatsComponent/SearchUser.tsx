@@ -1,4 +1,4 @@
-import axios from '@/axios/axios';
+import axios from "@/axios/axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -8,7 +8,7 @@ import {
   SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import { Search } from "lucide-react";
 import { useState } from "react";
@@ -18,29 +18,27 @@ import { SkeletonDemo } from "./SkeletonDemo";
 type userProps = {
   name: string;
   email: string;
-  pic:string;
-  _id:string;
-}
+  pic: string;
+  _id: string;
+};
 
 export function SheetDemo() {
-  const [users,setUsers] = useState([])
-  const [search,setSearch] = useState('');
-  const [loading, setLoading] = useState(false)
+  const [users, setUsers] = useState<userProps[]>([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const findUser = async () => {
-    try{
-      setLoading(true)
+    try {
+      setLoading(true);
       const res = await axios.get(`/user/findUsers?search=${search}`);
-    console.log(res.data.users)
-      setUsers(() => res.data.users)
-}
-
-
-    catch(err:any) {
-      console.log(err.response.data)
-    }finally{
-      setLoading(false)
+      setUsers(res.data.users || []);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
   return (
     <Sheet key="left">
       <SheetTrigger asChild>
@@ -51,9 +49,7 @@ export function SheetDemo() {
       <SheetContent side="left" className="w-[100%] sm:w-[320px]">
         <SheetHeader>
           <SheetTitle>Search</SheetTitle>
-          <SheetDescription>
-            Search for a friend and start chatting.
-          </SheetDescription>
+          <SheetDescription>Search for a friend and start chatting.</SheetDescription>
         </SheetHeader>
         <div className="py-4 flex w-full max-w-sm items-center space-x-2">
           <Input
@@ -70,14 +66,12 @@ export function SheetDemo() {
         {loading ? (
           <SkeletonDemo />
         ) : (
-          users.map((item: userProps) => (
-            <SheetClose className="flex bg-slate-300 rounded-md my-2 hover:bg-slate-500 transition-all duration-100 cursor-pointer w-full" key={item?._id}>
-              <SearchFriend
-                name={item?.name}
-                email={item?.email}
-                pic={item?.pic}
-                userId={item?._id}
-              />
+          users.map((item) => (
+            <SheetClose
+              className="flex bg-slate-300 rounded-md my-2 hover:bg-slate-500 transition-all duration-100 cursor-pointer w-full"
+              key={item._id}
+            >
+              <SearchFriend name={item.name} email={item.email} pic={item.pic} userId={item._id} />
             </SheetClose>
           ))
         )}

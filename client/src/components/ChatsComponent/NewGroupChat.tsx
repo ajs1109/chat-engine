@@ -1,3 +1,7 @@
+import axios from "@/axios/axios";
+import { User } from "@/features/chatSlice";
+import { getProfileImageUrl } from "@/lib/config";
+import { Badge } from "../ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,78 +14,74 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Plus, X } from "lucide-react";
-import { useState, useEffect } from "react";
-import axios from "@/axios/axios";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Badge } from "../ui/badge";
-import { User } from "@/features/chatSlice";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Dispatch, SetStateAction } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export function DialogDemo({
-  setGroupCreated,groupCreated
+  setGroupCreated,
+  groupCreated,
 }: {
   setGroupCreated: Dispatch<SetStateAction<boolean>>;
-  groupCreated:Boolean;
+  groupCreated: boolean;
 }) {
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [friendName, setFriendName] = useState("");
-  const [users, setUsers] = useState<User[] | []>([]);
-  const [userArray, setUserArray] = useState<User[] | []>([]);
-  const [newArray, setNewArray] = useState<User[] | []>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [userArray, setUserArray] = useState<User[]>([]);
 
   useEffect(() => {
-    axios.get(`/user/findUsers`).then((res) => {
-      setUserArray(res.data.users);
-      setNewArray(res.data.users);
-    });
+    const loadUsers = async () => {
+      try {
+        const res = await axios.get(`/user/findUsers`);
+        setUserArray(res.data.users || []);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    void loadUsers();
   }, []);
 
-  useEffect(() => {
-    const newList = userArray?.filter((user) => {
-      return user.name.toLowerCase().includes(`${friendName}`.toLowerCase());
-    });
-    setNewArray(newList);
-    console.log("newArray : ", newArray);
-  }, [friendName]);
+  const newArray = useMemo(
+    () =>
+      userArray.filter((user) => {
+        const match = user.name.toLowerCase().includes(friendName.toLowerCase());
+        const selected = users.some((selectedUser) => selectedUser._id === user._id);
+        return match && !selected;
+      }),
+    [friendName, userArray, users]
+  );
 
   const handleUserClick = (item: User | undefined) => {
-    if (item) {
-      const newUsers: User[] | [] = [...users, item];
-      setUsers(newUsers);
+    if (!item || users.some((user) => user._id === item._id)) {
+      return;
     }
-    console.log("newUsers : ", users);
-    setNewArray(
-      newArray.filter((user) => {
-        return user !== item;
-      })
-    );
+
+    setUsers((prev) => [...prev, item]);
   };
 
   const deleteFromGroup = (item: User) => {
-    setUsers(
-      users.filter((user) => {
-        return user !== item;
-      })
-    );
-    setNewArray([...newArray, item]);
+    setUsers((prev) => prev.filter((user) => user._id !== item._id));
   };
 
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const newusers = JSON.stringify(users);
+      const newusers = JSON.stringify(users.map((user) => user._id));
       const { data } = await axios.post("/chat/createGroupChat", {
         name,
         newusers,
       });
-      if (data) setGroupCreated(!groupCreated);
-      console.log(data);
+      if (data) {
+        setGroupCreated(!groupCreated);
+      }
       toast.success("Successfully created");
-    } catch (err: any) {
-      console.log(err.message);
-      toast.error(err.message);
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to create group");
     } finally {
       setLoading(false);
     }
@@ -89,8 +89,6 @@ export function DialogDemo({
 
   return (
     <Dialog>
-      {/* to remove error */}
-      {!loading && <></>}
       <DialogTrigger asChild>
         <Button variant="outline">
           New Group <Plus className="ml-1 h-4 w-4" />
@@ -99,9 +97,7 @@ export function DialogDemo({
       <DialogContent className="sm:max-w-[425px] flex flex-col max-h-[80%]">
         <DialogHeader>
           <DialogTitle>Create a Group</DialogTitle>
-          <DialogDescription>
-            Create a new Group Chat with your friends
-          </DialogDescription> 
+          <DialogDescription>Create a new Group Chat with your friends</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid w-full px-2 mx-auto gap-4">
@@ -125,15 +121,15 @@ export function DialogDemo({
           </div>
         </div>
         <div className="overflow-auto py-3 h-fit flex flex-nowrap no-scrollbar">
-          {users.map((item: User, index: number) => (
+          {users.map((item) => (
             <Badge
               className="hover:cursor-pointer mr-1 my-0.5 h-5 w-fit flex flex-nowrap"
               onClick={() => deleteFromGroup(item)}
-              key={index}
+              key={item._id}
             >
               <div className="mr-1">{item.name.split(" ")[0]}</div>
-              <div className="">{item.name.split(" ")[1]}</div>
-              <X className="h-3 w-3" />{" "}
+              <div>{item.name.split(" ")[1]}</div>
+              <X className="h-3 w-3" />
             </Badge>
           ))}
         </div>
@@ -145,11 +141,8 @@ export function DialogDemo({
               key={item._id}
             >
               <Avatar className="m-2">
-                <AvatarImage
-                  src={`http://localhost:5000/uploads/profilePicture/${item.pic}`}
-                  alt="@shadcn"
-                />
-                <AvatarFallback>{`${item.name[0].toUpperCase()}`}</AvatarFallback>
+                <AvatarImage src={getProfileImageUrl(item.pic)} alt="profile" />
+                <AvatarFallback>{item.name[0].toUpperCase()}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col justify-evenly">
                 <div className="text-sm">{item.name}</div>
@@ -161,12 +154,7 @@ export function DialogDemo({
 
         <DialogFooter>
           <DialogTrigger>
-            <Button
-              type="submit"
-              variant="outline"
-              onClick={handleSubmit}
-              // disabled={loading}
-            >
+            <Button type="submit" variant="outline" onClick={handleSubmit} disabled={loading}>
               Create Group
             </Button>
           </DialogTrigger>
@@ -177,3 +165,4 @@ export function DialogDemo({
 }
 
 export default DialogDemo;
+

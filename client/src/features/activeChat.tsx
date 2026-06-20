@@ -17,13 +17,12 @@ const activeChatSlice = createSlice({
       state.activeChat = action.payload;
     },
     deleteUser: (state, action: PayloadAction<User>) => {
-      let newUsersList: User[] | undefined = state.activeChat?.users.filter(
+      const newUsersList: User[] | undefined = state.activeChat?.users.filter(
         (user) => user.email !== action.payload.email
       );
-      if (newUsersList && state.activeChat)
+      if (newUsersList && state.activeChat) {
         state.activeChat.users = newUsersList;
-
-      console.log("slice : ", state.activeChat?.users);
+      }
     },
     renameGroup: (state, action: PayloadAction<string>) => {
       if (state.activeChat) state.activeChat.chatName = action?.payload;

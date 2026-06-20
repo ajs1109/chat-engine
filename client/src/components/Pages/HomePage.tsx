@@ -1,4 +1,5 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { authSignin } from "@/features/userSlice";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,28 +8,37 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
-import axios from "../../axios/axios";
 import { toast } from "react-hot-toast/headless";
-import { authSignin } from "@/features/userSlice";
 import { useDispatch } from "react-redux";
+import axios from "../../axios/axios";
+
+type FormState = {
+  fname: string;
+  lname: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  pic: File | null;
+};
+
 const HomePage = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(false);
-  const [data, setData] = useState({
+  const [data, setData] = useState<FormState>({
     fname: "",
     lname: "",
     email: "",
     password: "",
     confirmPassword: "",
-    pic: "",
+    pic: null,
   });
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
@@ -36,8 +46,10 @@ const HomePage = () => {
     try {
       setLoading(true);
       if (!user) {
-        let formdata = new FormData();
-        formdata.append("pic", data.pic);
+        const formdata = new FormData();
+        if (data.pic) {
+          formdata.append("pic", data.pic);
+        }
         formdata.append("fname", data.fname);
         formdata.append("lname", data.lname);
         formdata.append("email", data.email);
@@ -45,7 +57,6 @@ const HomePage = () => {
         formdata.append("confirmPassword", data.confirmPassword);
 
         const res = await axios.post("/user/signup", formdata);
-
         dispatch(authSignin(res.data));
       } else {
         const newData = {
@@ -53,20 +64,20 @@ const HomePage = () => {
           password: data.password,
         };
         const res = await axios.post("/user/login", newData);
-
         dispatch(authSignin(res.data));
       }
       window.location.assign("/chats");
       toast.success("success");
-    } catch (err: any) {
+    } catch (err) {
       toast.error("something went wrong");
-      console.log(err.response.data);
+      console.log(err);
     } finally {
       setLoading(false);
     }
   };
-  const upload = (e: any) => {
-    setData({ ...data, pic: e.target.files[0] });
+
+  const upload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setData({ ...data, pic: e.target.files?.[0] || null });
   };
 
   return (
