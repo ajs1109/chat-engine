@@ -11,7 +11,7 @@ RUN npm ci
 # Stage 2: Build the Next.js app
 FROM node:22.12.0-alpine AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app ./
 COPY . .
 
 ENV NODE_ENV=production
