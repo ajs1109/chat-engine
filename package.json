@@ -11,6 +11,7 @@
     "build:web": "npm --workspace web run build",
     "lint:web": "npm --workspace web run lint",
     "start:web": "npm --workspace web run start",
+    "deploy:azure": "./scripts/azure-deploy.sh",
     "start:azure": "SERVE_NEXT=true NODE_ENV=production npm --workspace server run start:prod"
   }
 }

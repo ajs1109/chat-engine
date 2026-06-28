@@ -3,7 +3,8 @@ name: Deploy to Azure App Service
 on:
   push:
     branches:
-      - Test-Cloud
+      - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
