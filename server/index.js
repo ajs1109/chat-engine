@@ -26,11 +26,9 @@ if (!CONNECTION_URL) {
   throw new Error("CONNECTION_URL is required");
 }
 
-// CORS and body parsers must be registered BEFORE the /api/* catch-all so that
+// CORS must be registered BEFORE the /api/* catch-all so that
 // preflight OPTIONS requests and all API responses include the correct
 // Access-Control-Allow-Origin header even when Next.js handles the route.
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(
   cors({
     origin: corsOrigins,
@@ -46,6 +44,9 @@ app.all("/api/*", (req, res, nextMiddleware) => {
 
   nextHandler(req, res);
 });
+
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use("/uploads", express.static("uploads"));
 app.use("/user", userRouter);
