@@ -14,7 +14,22 @@ import {
   Settings,
   Sun
 } from "lucide-react";
-import { ProfessionalThread } from "@/components/assistant-ui/professional-thread";
+import dynamic from "next/dynamic";
+
+import { RuntimeProvider } from "@/components/providers/runtime-provider";
+
+const ProfessionalThreadComponent = dynamic(
+  () => import("@/components/assistant-ui/professional-thread").then((m) => m.ProfessionalThread),
+  { ssr: false }
+);
+
+function ProfessionalThread() {
+  return (
+    <RuntimeProvider>
+      <ProfessionalThreadComponent />
+    </RuntimeProvider>
+  );
+}
 import { AuthPanel } from "@/components/chat/auth-panel";
 import { ChatComposer } from "@/components/chat/chat-composer";
 import { MessageList } from "@/components/chat/message-list";
