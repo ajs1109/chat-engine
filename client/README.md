@@ -1,27 +1,16 @@
-# React + TypeScript + Vite
+# Legacy Vite Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This directory contains Chat Engine's original React, TypeScript, Vite, and Redux interface. It remains in the repository as a migration reference and as documentation of the backend contracts consumed by the first client.
 
-Currently, two official plugins are available:
+New interface work belongs in [`../web`](../web). See the [root README](../README.md) and [`../docs/next-architecture.md`](../docs/next-architecture.md) for the current application architecture.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Run the legacy client
 
-## Expanding the ESLint configuration
+Start the Express backend on port `5000`, then:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+```bash
+npm install
+npm run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+The client proxies API calls to `http://localhost:5000` as configured in `package.json`.
