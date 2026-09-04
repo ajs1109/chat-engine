@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@assistant-ui/react": "0.11.57",
+    "@assistant-ui/react": "0.11.56",
     "@assistant-ui/react-markdown": "0.11.9",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-dialog": "^1.1.14",
