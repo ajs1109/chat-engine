@@ -4,48 +4,54 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
+    --background: 210 25% 98%;
+    --foreground: 216 30% 14%;
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 216 30% 14%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 197 87% 36%;
+    --popover-foreground: 216 30% 14%;
+    --primary: 202 88% 34%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 38 84% 56%;
-    --secondary-foreground: 24 20% 12%;
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
-    --accent: 166 64% 42%;
-    --accent-foreground: 170 30% 10%;
+    --secondary: 210 24% 94%;
+    --secondary-foreground: 216 25% 20%;
+    --muted: 210 22% 95%;
+    --muted-foreground: 215 12% 43%;
+    --accent: 199 82% 94%;
+    --accent-foreground: 203 74% 28%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 197 87% 36%;
-    --radius: 0.5rem;
+    --border: 212 18% 88%;
+    --input: 212 18% 84%;
+    --ring: 202 88% 34%;
+    --message-incoming: 0 0% 100%;
+    --message-sent: 202 82% 34%;
+    --chat-wallpaper: 205 33% 96%;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 224 25% 8%;
-    --foreground: 210 40% 98%;
-    --card: 225 23% 12%;
-    --card-foreground: 210 40% 98%;
-    --popover: 225 23% 12%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 190 86% 44%;
-    --primary-foreground: 222 47% 11%;
-    --secondary: 43 92% 55%;
-    --secondary-foreground: 25 20% 10%;
-    --muted: 220 18% 16%;
-    --muted-foreground: 215 16% 68%;
-    --accent: 159 60% 44%;
-    --accent-foreground: 170 30% 9%;
-    --destructive: 0 63% 48%;
+    --background: 222 28% 9%;
+    --foreground: 210 24% 94%;
+    --card: 220 24% 13%;
+    --card-foreground: 210 24% 94%;
+    --popover: 220 24% 13%;
+    --popover-foreground: 210 24% 94%;
+    --primary: 199 87% 55%;
+    --primary-foreground: 220 30% 10%;
+    --secondary: 220 20% 18%;
+    --secondary-foreground: 210 24% 92%;
+    --muted: 220 19% 17%;
+    --muted-foreground: 214 14% 68%;
+    --accent: 202 55% 20%;
+    --accent-foreground: 199 90% 78%;
+    --destructive: 0 68% 52%;
     --destructive-foreground: 210 40% 98%;
-    --border: 220 18% 20%;
-    --input: 220 18% 20%;
-    --ring: 190 86% 44%;
+    --border: 218 18% 22%;
+    --input: 218 18% 26%;
+    --ring: 199 87% 55%;
+    --message-incoming: 220 22% 16%;
+    --message-sent: 202 72% 38%;
+    --chat-wallpaper: 222 25% 11%;
   }
 
   * {
@@ -53,8 +59,29 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply overflow-hidden bg-background font-sans text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
+
+  ::selection {
+    background: hsl(var(--primary) / 0.22);
+    color: hsl(var(--foreground));
+  }
+
+  input,
+  textarea {
+    caret-color: hsl(var(--primary));
+  }
+}
+
+.chat-wallpaper {
+  background-color: hsl(var(--chat-wallpaper));
+  background-image: radial-gradient(circle at center, hsl(var(--foreground) / 0.045) 1px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+
+.dark .chat-wallpaper {
+  background-image: radial-gradient(circle at center, hsl(var(--foreground) / 0.055) 1px, transparent 1.2px);
 }
 
 .chat-scrollbar {
@@ -70,4 +97,19 @@
 .chat-scrollbar::-webkit-scrollbar-thumb {
   background: hsl(var(--muted-foreground) / 0.28);
   border-radius: 999px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.48);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

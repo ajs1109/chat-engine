@@ -36,12 +36,26 @@ export function AttachmentPreview({ attachment, onRemove, onRetry }: AttachmentP
         ) : null}
       </div>
       {onRetry && attachment.status === "failed" ? (
-        <Button type="button" size="icon" variant="ghost" className="h-7 w-7" onClick={onRetry}>
+        <Button
+          type="button"
+          size="icon"
+          variant="ghost"
+          className="h-7 w-7"
+          aria-label={`Retry uploading ${attachment.name}`}
+          onClick={onRetry}
+        >
           <RotateCcw className="h-4 w-4" />
         </Button>
       ) : null}
       {onRemove ? (
-        <Button type="button" size="icon" variant="ghost" className="h-7 w-7" onClick={onRemove}>
+        <Button
+          type="button"
+          size="icon"
+          variant="ghost"
+          className="h-7 w-7"
+          aria-label={`Remove ${attachment.name}`}
+          onClick={onRemove}
+        >
           <X className="h-4 w-4" />
         </Button>
       ) : null}

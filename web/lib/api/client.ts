@@ -1,4 +1,4 @@
-import type { ApiResult, Attachment, AuthProfile, Chat, ChatMessage } from "@/lib/types/chat";
+import type { ApiResult, Attachment, AuthProfile, Chat, ChatMessage, User } from "@/lib/types/chat";
 
 const PROFILE_KEY = "profile";
 
@@ -44,6 +44,33 @@ export function login(email: string, password: string) {
     method: "POST",
     body: JSON.stringify({ email, password })
   });
+}
+
+export function signUp(input: {
+  fname: string;
+  lname: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}) {
+  return apiFetch<AuthProfile>("/api/user/signup", {
+    method: "POST",
+    body: JSON.stringify(input)
+  });
+}
+
+export async function searchUsers(query: string) {
+  const payload = await apiFetch<{ users: User[] }>(`/api/user/search?query=${encodeURIComponent(query)}`);
+  return payload.users;
+}
+
+export async function accessChat(userId: string) {
+  const payload = await apiFetch<Chat | { isChat: Chat[] }>("/api/chat/access", {
+    method: "POST",
+    body: JSON.stringify({ userId })
+  });
+  if ("isChat" in payload) return payload.isChat[0];
+  return payload;
 }
 
 export function fetchChats() {

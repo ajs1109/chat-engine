@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-04T14:12:11Z",
+  "title": "Design System: Chat Engine",
+  "extensions": {
+    "colorMeta": {
+      "messenger-blue": { "role": "primary", "displayName": "Messenger Blue", "canonical": "hsl(202 88% 34%)", "tonalRamp": ["hsl(202 72% 15%)", "hsl(202 78% 24%)", "hsl(202 88% 34%)", "hsl(202 86% 44%)", "hsl(202 82% 55%)", "hsl(202 78% 67%)", "hsl(202 72% 82%)", "hsl(202 65% 95%)"] },
+      "message-blue": { "role": "primary", "displayName": "Message Blue", "canonical": "hsl(202 82% 34%)", "tonalRamp": ["hsl(202 68% 15%)", "hsl(202 75% 24%)", "hsl(202 82% 34%)", "hsl(202 80% 44%)", "hsl(202 76% 55%)", "hsl(202 70% 67%)", "hsl(202 64% 82%)", "hsl(202 58% 95%)"] },
+      "paper": { "role": "neutral", "displayName": "Cool Paper", "canonical": "hsl(210 25% 98%)", "tonalRamp": ["hsl(210 18% 15%)", "hsl(210 19% 28%)", "hsl(210 20% 42%)", "hsl(210 21% 56%)", "hsl(210 22% 70%)", "hsl(210 23% 82%)", "hsl(210 24% 91%)", "hsl(210 25% 98%)"] },
+      "ink": { "role": "neutral", "displayName": "Clear Ink", "canonical": "hsl(216 30% 14%)", "tonalRamp": ["hsl(216 30% 14%)", "hsl(216 28% 25%)", "hsl(216 25% 38%)", "hsl(216 22% 51%)", "hsl(216 20% 64%)", "hsl(216 18% 76%)", "hsl(216 16% 87%)", "hsl(216 14% 95%)"] },
+      "night": { "role": "neutral", "displayName": "Night Canvas", "canonical": "hsl(222 28% 9%)", "tonalRamp": ["hsl(222 28% 9%)", "hsl(222 26% 18%)", "hsl(222 24% 30%)", "hsl(222 22% 43%)", "hsl(222 20% 57%)", "hsl(222 18% 70%)", "hsl(222 16% 84%)", "hsl(222 14% 95%)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Authentication and onboarding statements only." },
+      "body": { "displayName": "Body", "purpose": "Messages, forms, descriptions, and compact product chrome." },
+      "label": { "displayName": "Label", "purpose": "Short uppercase navigation section labels." }
+    },
+    "shadows": [
+      { "name": "bubble-lift", "value": "0 2px 8px -5px hsl(var(--foreground) / 0.5)", "purpose": "Separates message bubbles from the chat wallpaper." },
+      { "name": "floating-control", "value": "0 8px 24px -10px hsl(var(--foreground) / 0.5)", "purpose": "Lifts transient controls such as scroll-to-latest." }
+    ],
+    "motion": [
+      { "name": "state-transition", "value": "200ms ease-out", "purpose": "Drawer movement and compact control state changes; reduced to near-zero when reduced motion is requested." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The compact, high-confidence action used for account creation, search, and sending.",
+      "html": "<button class=\"ds-button-primary\">Create account</button>",
+      "css": ".ds-button-primary{height:2.75rem;padding:.75rem 1rem;border:0;border-radius:.75rem;background:hsl(202 88% 34%);color:#fff;font:600 .875rem/1.25 Manrope,ui-sans-serif,system-ui,sans-serif;transition:filter .15s ease,box-shadow .15s ease}.ds-button-primary:hover{filter:brightness(1.08)}.ds-button-primary:focus-visible{outline:2px solid hsl(202 88% 34%);outline-offset:2px}"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "input-search",
+      "description": "A quiet field for filtering or finding conversations.",
+      "html": "<input class=\"ds-input-search\" aria-label=\"Search conversations\" placeholder=\"Search conversations\">",
+      "css": ".ds-input-search{height:2.75rem;width:18rem;padding:.75rem;border:1px solid transparent;border-radius:.75rem;background:hsl(210 22% 95%);color:hsl(216 30% 14%);font:400 .875rem/1.5 Manrope,ui-sans-serif,system-ui,sans-serif}.ds-input-search:focus-visible{outline:2px solid hsl(202 88% 34%);outline-offset:1px}.ds-input-search::placeholder{color:hsl(215 12% 43%)}"
+    },
+    {
+      "name": "Conversation Row",
+      "kind": "nav",
+      "description": "The dense avatar, name, time, and preview pattern used in the conversation rail.",
+      "html": "<button class=\"ds-conversation\"><span class=\"ds-avatar\">MC</span><span><strong>Maya Chen</strong><small>Perfect — I’ll share the launch notes next.</small></span></button>",
+      "css": ".ds-conversation{display:grid;grid-template-columns:3rem 1fr;gap:.75rem;width:22rem;min-height:4.5rem;padding:.625rem .75rem;border:0;border-radius:.75rem;background:transparent;color:hsl(216 30% 14%);text-align:left;font-family:Manrope,ui-sans-serif,system-ui,sans-serif}.ds-conversation:hover{background:hsl(210 22% 95%)}.ds-conversation:focus-visible{outline:2px solid hsl(202 88% 34%);outline-offset:1px}.ds-conversation strong,.ds-conversation small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ds-conversation strong{font-size:.875rem}.ds-conversation small{margin-top:.25rem;color:hsl(215 12% 43%);font-size:.75rem}.ds-avatar{display:grid;width:3rem;height:3rem;place-items:center;border-radius:9999px;background:hsl(210 24% 94%);font-size:.875rem;font-weight:600}"
+    },
+    {
+      "name": "Sent Message",
+      "kind": "custom",
+      "refersTo": "message-sent",
+      "description": "The ownership-forward bubble for the current user's messages.",
+      "html": "<div class=\"ds-message-sent\">The responsive polish is ready.<time>17:38</time></div>",
+      "css": ".ds-message-sent{max-width:28rem;padding:.5rem .875rem;border-radius:.875rem .875rem .25rem .875rem;background:hsl(202 82% 34%);color:#fff;font:400 .875rem/1.5 Manrope,ui-sans-serif,system-ui,sans-serif;box-shadow:0 2px 8px -5px rgba(0,0,0,.5)}.ds-message-sent time{display:block;margin-top:.125rem;color:rgba(255,255,255,.9);font-size:.625rem;text-align:right}"
+    },
+    {
+      "name": "Theme Toggle",
+      "kind": "button",
+      "description": "A directly visible icon action whose accessible name describes the destination theme.",
+      "html": "<button class=\"ds-theme-toggle\" aria-label=\"Switch to dark mode\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\" width=\"20\" height=\"20\"><path d=\"M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/></svg></button>",
+      "css": ".ds-theme-toggle{display:grid;width:2.5rem;height:2.5rem;place-items:center;border:0;border-radius:.75rem;background:transparent;color:hsl(216 30% 14%)}.ds-theme-toggle:hover{background:hsl(210 22% 95%)}.ds-theme-toggle:focus-visible{outline:2px solid hsl(202 88% 34%);outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Familiar Messenger",
+    "overview": "Chat Engine should disappear behind the conversation. Its interface uses recognizable messenger structure, calm surfaces, compact controls, and one restrained blue accent so users can sign in, find a person, or open the assistant without learning a dashboard. The system takes familiarity from modern messaging products without copying their brand assets.",
+    "keyCharacteristics": ["Conversation-first hierarchy with minimal chrome.", "Restrained blue actions against paper-white or ink-dark surfaces.", "Compact rounded controls, circular identity marks, and calm asymmetric bubbles.", "Equivalent light and dark modes with obvious, persistent switching.", "One-pane-at-a-time mobile navigation."],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Blue communicates action, selection, or message ownership; it is not general decoration.", "section": "colors" },
+      { "name": "The Theme Parity Rule", "body": "Every surface and state must remain legible and structurally identical in light and dark modes.", "section": "colors" },
+      { "name": "The Quiet Hierarchy Rule", "body": "Repeated conversation UI stays compact; display scale belongs only to onboarding or true empty states.", "section": "typography" },
+      { "name": "The Flat Shell Rule", "body": "Persistent navigation and thread regions use borders and tonal layering; shadows are reserved for content or controls that visually float.", "section": "elevation" }
+    ],
+    "dos": ["Do keep sign-in, account creation, theme switching, conversation selection, and sending immediately discoverable.", "Do preserve the two-pane desktop and one-pane mobile messenger model.", "Do use semantic icon labels, visible keyboard focus, sufficient contrast, and reduced-motion support.", "Do keep the assistant inside the conversation list while isolating its runtime behavior."],
+    "donts": ["Don't hide primary actions in a gear menu or ambiguous overflow control.", "Don't reintroduce dashboard tabs, decorative cards, or competing chrome around the active conversation.", "Don't expose placeholder message actions such as no-op retry or client-only destructive hide.", "Don't copy WhatsApp or Telegram branding, proprietary assets, or signature colors literally."]
+  }
+}

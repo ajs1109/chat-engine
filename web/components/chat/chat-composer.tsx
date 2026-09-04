@@ -103,7 +103,7 @@ export function ChatComposer({ disabled, sending, onSend, onTyping, onStopTyping
 
   return (
     <div
-      className="rounded-lg border bg-background p-2 shadow-sm transition-colors data-[dragging=true]:border-primary data-[dragging=true]:bg-primary/5"
+      className="rounded-[14px] bg-muted p-1.5 transition-colors data-[dragging=true]:bg-accent"
       data-dragging={dragging}
       onDragOver={(event) => {
         event.preventDefault();
@@ -129,16 +129,8 @@ export function ChatComposer({ disabled, sending, onSend, onTyping, onStopTyping
           ))}
         </div>
       ) : null}
-      <Textarea
-        value={content}
-        disabled={disabled}
-        placeholder="Message this chat..."
-        className="max-h-40 min-h-20 resize-none border-0 px-2 shadow-none focus-visible:ring-0"
-        onChange={(event) => handleContentChange(event.target.value)}
-        onKeyDown={handleKeyDown}
-      />
-      <div className="mt-2 flex items-center justify-between">
-        <div className="flex items-center gap-1">
+      <div className="flex items-end gap-1">
+        <div className="flex items-center self-end">
           <input
             ref={fileInputRef}
             type="file"
@@ -154,6 +146,7 @@ export function ChatComposer({ disabled, sending, onSend, onTyping, onStopTyping
                   type="button"
                   variant="ghost"
                   size="icon"
+                  className="h-10 w-10 rounded-xl text-muted-foreground"
                   disabled={disabled}
                   onClick={() => fileInputRef.current?.click()}
                 >
@@ -165,19 +158,31 @@ export function ChatComposer({ disabled, sending, onSend, onTyping, onStopTyping
             </Tooltip>
           </TooltipProvider>
           {content ? (
-            <Button type="button" variant="ghost" size="sm" onClick={() => setContent("")}>
+            <Button type="button" variant="ghost" size="icon" className="h-10 w-10 rounded-xl text-muted-foreground" onClick={() => setContent("")}>
               <X className="h-4 w-4" />
-              Clear
+              <span className="sr-only">Clear message</span>
             </Button>
           ) : null}
         </div>
+        <Textarea
+          value={content}
+          disabled={disabled}
+          placeholder="Message"
+          aria-label="Message"
+          rows={1}
+          className="max-h-32 min-h-10 flex-1 resize-none border-0 bg-transparent px-2 py-2.5 shadow-none focus-visible:ring-0"
+          onChange={(event) => handleContentChange(event.target.value)}
+          onKeyDown={handleKeyDown}
+        />
         <Button
           type="button"
+          size="icon"
+          className="h-10 w-10 shrink-0 rounded-xl"
           disabled={disabled || sending || (!content.trim() && attachments.every((a) => a.status !== "ready"))}
           onClick={() => void handleSubmit()}
         >
           <SendHorizontal className="h-4 w-4" />
-          {sending ? "Sending" : "Send"}
+          <span className="sr-only">{sending ? "Sending message" : "Send message"}</span>
         </Button>
       </div>
     </div>

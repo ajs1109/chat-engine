@@ -59,7 +59,10 @@ export function ToastProvider({ children }: Readonly<{ children: React.ReactNode
                 </ToastPrimitive.Description>
               ) : null}
             </div>
-            <ToastPrimitive.Close className="rounded-md p-1 opacity-70 transition-opacity hover:opacity-100">
+            <ToastPrimitive.Close
+              aria-label="Dismiss notification"
+              className="rounded-md p-1 opacity-70 transition-opacity hover:opacity-100"
+            >
               <X className="h-4 w-4" />
             </ToastPrimitive.Close>
           </ToastPrimitive.Root>

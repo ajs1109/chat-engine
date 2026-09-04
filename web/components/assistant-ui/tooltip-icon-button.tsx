@@ -21,7 +21,13 @@ export const TooltipIconButton = React.forwardRef<
   <TooltipProvider>
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button ref={ref} size="icon" variant="ghost" {...props}>
+        <Button
+          ref={ref}
+          size="icon"
+          variant="ghost"
+          aria-label={props["aria-label"] ?? tooltip}
+          {...props}
+        >
           {children}
         </Button>
       </TooltipTrigger>
